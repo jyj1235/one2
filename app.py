@@ -19,7 +19,7 @@ st.sidebar.info("예시:\n005930.KS = 삼성전자\n000660.KS = SK하이닉스")
 
 @st.cache_data
 def load_data(ticker):
-    tiker=tiker.strip().upper()
+    ticker=ticker.strip().upper()
 
     data = yf.download(
         ticker, 
