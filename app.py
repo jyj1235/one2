@@ -56,22 +56,21 @@ buy_score = 0
 sell_score = 0
 reasons = []
 
-if latest["Short_MA"] .item()> 
-latest["Long_MA"].item():
+if latest["Short_MA"].item()>latest["Long_MA"].item():
     buy_score += 30
     reasons.append("단기 이동평균 상승")
 
-if latest["RSI"] < 35:
+if latest["RSI"] .item()< 35:
     buy_score += 30
     reasons.append("RSI 과매도 구간")
 
-if latest["RSI"] > 70:
+if latest["RSI"] .item()> 70:
     sell_score += 40
     reasons.append("RSI 과열 구간")
 
 recent_volume = df["Volume"].tail(5).mean()
 
-if latest["Volume"] > recent_volume * 1.5:
+if latest["Volume"] .item()> recent_volume * 1.5:
     buy_score += 20
     reasons.append("거래량 증가")
 
