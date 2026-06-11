@@ -59,7 +59,11 @@ avg_loss = loss.rolling(14).mean()
 
 rs = avg_gain / avg_loss
 df["RSI"] = 100 - (100 / (1 + rs))
+df = df.dropna()
 
+if df.empty:
+    st.error("계산 가능한 데이터가 없습니다.")
+    st.stop()
 latest = df.iloc[-1]
 
 buy_score = 0
