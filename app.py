@@ -22,7 +22,7 @@ def load_data(ticker):
     ticker=ticker.strip().upper()
 
     data = yf.download(
-        ticker, 
+        ticker,
         period="1y",
         interval="1d",
         progress=False,
