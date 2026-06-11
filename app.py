@@ -50,7 +50,7 @@ df["Short_MA"] = df["Close"].rolling(short_ma).mean()
 df["Long_MA"] = df["Close"].rolling(long_ma).mean()
 
 delta = df["Close"].diff()
-
+st.write(df.columns)
 gain = delta.clip(lower=0)
 loss = -delta.clip(upper=0)
 
