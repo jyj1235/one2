@@ -92,7 +92,7 @@ if latest["Close"] .item()< latest["Short_MA"].item():
     sell_score += 30
     reasons.append("단기선 이탈")
 
-st.subheader(f"📊 {ticker} 분석")
+st.subheader(f"📊 {stock_name} 분석")
 
 col1, col2, col3 = st.columns(3)
 
