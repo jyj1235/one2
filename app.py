@@ -70,11 +70,11 @@ if latest["RSI"] .item()> 70:
 
 recent_volume = df["Volume"].tail(5).mean()
 
-if latest["Volume"] .item()> recent_volume * 1.5:
+if latest["Volume"] .item()> recent_volume.item() * 1.5:
     buy_score += 20
     reasons.append("거래량 증가")
 
-if latest["Close"] < latest["Short_MA"]:
+if latest["Close"] .item()< latest["Short_MA"].item():
     sell_score += 30
     reasons.append("단기선 이탈")
 
