@@ -56,7 +56,8 @@ buy_score = 0
 sell_score = 0
 reasons = []
 
-if latest["Short_MA"] > latest["Long_MA"]:
+if latest["Short_MA"] .item()> 
+latest["Long_MA"].item():
     buy_score += 30
     reasons.append("단기 이동평균 상승")
 
