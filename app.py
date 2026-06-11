@@ -101,9 +101,6 @@ st.write("### AI 분석 이유")
 for r in reasons:
     st.write(f"- {r}")
 
-chart_df = df[["Close", "Short_MA", "Long_MA"]]
-st.line_chart(chart_df)
-
 st.write("### 최근 데이터")
 st.dataframe(df.tail(10))
 
