@@ -10,7 +10,17 @@ st.title("📈 AI 주식 타이밍 알리미")
 
 st.sidebar.header("설정")
 
-ticker = st.sidebar.text_input("종목 코드", "005930.KS")
+stock_name = st.sidebar.text_input("종목명", "삼성전자")
+
+stock_map = {
+    "삼성전자": "005930.KS",
+    "SK하이닉스": "000660.KS",
+    "네이버": "035420.KS",
+    "카카오": "035720.KS",
+    "LG에너지솔루션": "373220.KS",
+}
+
+ticker = stock_map.get(stock_name, "005930.KS")
 
 short_ma = st.sidebar.slider("단기 이동평균", 3, 30, 5)
 long_ma = st.sidebar.slider("장기 이동평균", 10, 120, 20)
