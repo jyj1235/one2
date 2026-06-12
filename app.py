@@ -47,8 +47,6 @@ def load_data(ticker):
 
 df = load_data(ticker)
 
-df = load_data(ticker)
-
 if df.empty:
     st.error("데이터를 불러오지 못했습니다.")
     st.stop()
@@ -64,7 +62,6 @@ def load_realtime_data(ticker):
     )
 
 rt_df = load_realtime_data(ticker)
-    st.stop()
 
 df["Short_MA"] = df["Close"].rolling(short_ma).mean()
 df["Long_MA"] = df["Close"].rolling(long_ma).mean()
