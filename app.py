@@ -3,7 +3,7 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 import yfinance as yf
-
+from datetime import datetime, timedelta
 st.set_page_config(page_title="AI 주식 타이밍 알리미", layout="wide")
 
 st.title("📈 AI 주식 타이밍 알리미")
@@ -31,19 +31,34 @@ st.sidebar.info("예시:\n005930.KS = 삼성전자\n000660.KS = SK하이닉스")
 def load_data(ticker):
     ticker=ticker.strip().upper()
 
+    end = datetime.today() + timedelta(days=1)
+    start = end - timedelta(days=90)
+
     data = yf.download(
         ticker,
-        period="1y",
+        start=start.strftime("%Y-%m-%d"),
+        end=end.strftime("%Y-%m-%d"),
         interval="1d",
         progress=False,
         auto_adjust=False,
-        )
+    )
+
     return data
 
 df = load_data(ticker)
 
 if df.empty:
-    st.error("데이터를 불러오지 못했습니다.")
+    st.err@st.cache_data(ttl=60)
+def load_realtime_data(ticker):
+    return yf.download(
+        ticker,
+        period="1d",
+        interval="1m",
+        progress=False,
+        auto_adjust=False,
+    )
+
+rt_df = load_realtime_data(ticker)or("데이터를 불러오지 못했습니다.")
     st.stop()
 
 df["Short_MA"] = df["Close"].rolling(short_ma).mean()
@@ -65,12 +80,15 @@ if df.empty:
     st.error("계산 가능한 데이터가 없습니다.")
     st.stop()
 latest = df.iloc[-1]
-
+if not rt_df.empty:
+    current_price = rt_df["Close"].dropna().iloc[-1].item()
+else:
+    current_price = latest["Close"].item()
 buy_score = 0
 sell_score = 0
 reasons = []
 
-if latest["Short_MA"].item()>latest["Long_MA"].item():
+if current_price < latest["Short_MA"].item():
     buy_score += 30
     reasons.append("단기 이동평균 상승")
 
@@ -97,7 +115,7 @@ st.subheader(f"📊 {stock_name} 분석")
 col1, col2, col3 = st.columns(3)
 
 with col1:
-    st.metric("현재가", f"{latest['Close'].item():.0f}")
+    st.metric("현재가", f"{current_price:,.0f}")
 
 with col2:
     st.metric("매수 점수", f"{buy_score}/100")
@@ -116,7 +134,8 @@ for r in reasons:
     st.write(f"- {r}")
 
 st.write("### 최근 데이터")
-st.dataframe(df.tail(10))
+st.write("마지막 데이터 날짜:", df.index[-1].strftime("%Y-%m-%d"))
+st.dataframe(df.tail(15))
 
 st.info("""
 ⚠️ 이 앱은 투자 참고용입니다.
