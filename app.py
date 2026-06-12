@@ -47,8 +47,13 @@ def load_data(ticker):
 
 df = load_data(ticker)
 
+df = load_data(ticker)
+
 if df.empty:
-    st.err@st.cache_data(ttl=60)
+    st.error("데이터를 불러오지 못했습니다.")
+    st.stop()
+
+@st.cache_data(ttl=60)
 def load_realtime_data(ticker):
     return yf.download(
         ticker,
@@ -58,7 +63,7 @@ def load_realtime_data(ticker):
         auto_adjust=False,
     )
 
-rt_df = load_realtime_data(ticker)or("데이터를 불러오지 못했습니다.")
+rt_df = load_realtime_data(ticker)
     st.stop()
 
 df["Short_MA"] = df["Close"].rolling(short_ma).mean()
